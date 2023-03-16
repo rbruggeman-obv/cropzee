@@ -1,16 +1,16 @@
 // gather all cropzee dependencies and append on webpage
 var dependencies =
     '<!-- light-modal -->'
-    + '<link href="https://cdn.jsdelivr.net/gh/hunzaboy/Light-Modal@latest/dist/css/light-modal.min.css" rel="stylesheet">'
+    + '<link href="https://cdn.jsdelivr.net/gh/hunzaboy/Light-Modal@latest/dist/css/light-modal.css" rel="stylesheet">'
     + '<!-- animate.css -->'
-    + '<link href="https://cdn.jsdelivr.net/gh/daneden/animate.css@latest/animate.min.css" rel="stylesheet">'
+    + '<link href="https://cdn.jsdelivr.net/gh/daneden/animate.css@latest/animate.css" rel="stylesheet">'
     + '<!-- canvas-toBlob.js -->'
-    + '<script src="https://cdn.jsdelivr.net/gh/eligrey/canvas-toBlob.js@latest/canvas-toBlob.min.js" defer></script>'
+    + '<script src="https://cdn.jsdelivr.net/gh/eligrey/canvas-toBlob.js@latest/canvas-toBlob.js" defer></script>'
     + '<!-- FileSaver.js -->'
-    + '<script src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js@latest/dist/FileSaver.min.js" defer></script>'
+    + '<script src="https://cdn.jsdelivr.net/gh/eligrey/FileSaver.js@latest/dist/FileSaver.js" defer></script>'
     + '<!-- Croppr.js -->'
-    + '<link href="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@latest/dist/croppr.min.css" rel="stylesheet">'
-    + '<script src="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@latest/dist/croppr.min.js"></script>';
+    + '<link href="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@latest/dist/croppr.css" rel="stylesheet">'
+    + '<script src="https://cdn.jsdelivr.net/gh/jamesssooi/Croppr.js@latest/dist/croppr.js"></script>';
 $("body").after(dependencies);
 // used jQuery.fn.extend() method to provide new methods that can be chained to the jQuery() function
 // in our case - $(element).cropzee()
@@ -42,7 +42,7 @@ jQuery.fn.extend({
         }
         if (!options.imageExtension) {
             options.imageExtension = 'image/jpeg';
-        }         
+        }
         if (!options.returnImageMode) {
             options.returnImageMode = 'data-url';
         }
@@ -192,14 +192,14 @@ jQuery.fn.extend({
             setTimeout(function(){
                 var canvas = document.getElementById('cropzee-hidden-canvas');
                 var ctx = canvas.getContext('2d');
-                ctx.canvas.width = cropzeeCanvasWidth;
-                ctx.canvas.height = cropzeeCanvasHeight;
+                ctx.canvas.width = window.cropzeeCanvasWidth;
+                ctx.canvas.height = window.cropzeeCanvasHeight;
                 var img = new Image();
                 img.src = src;
-                ctx.drawImage(img, 0, 0, cropzeeCanvasWidth, cropzeeCanvasHeight);
+                ctx.drawImage(img, 0, 0, window.cropzeeCanvasWidth, window.cropzeeCanvasHeight);
                 setTimeout(function(){
                     // the css-only modal is called via href see https://hunzaboy.github.io/Light-Modal/#
-                    window.location = window.location.href + "#cropzee-modal";
+                    window.location = window.location.pathname.replace("#cropzee-modal#", "") + "#cropzee-modal";
                     // function to trigger croppr.js on picture in modal
                     cropzeeTriggerCroppr();
                 }, 50);
@@ -270,5 +270,5 @@ jQuery.fn.extend({
 // function to close modal
 function closeModal() {
     $('#cropzee-modal').remove();
-    window.location = window.location.href + '#';
+    window.location = window.location.pathname + '#';
 }
