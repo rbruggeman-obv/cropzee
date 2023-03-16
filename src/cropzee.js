@@ -14,6 +14,7 @@ var dependencies =
 $("body").after(dependencies);
 // used jQuery.fn.extend() method to provide new methods that can be chained to the jQuery() function
 // in our case - $(element).cropzee()
+
 jQuery.fn.extend({
   cropzee: function (options = {
         // croppr.js options
@@ -192,14 +193,14 @@ jQuery.fn.extend({
             setTimeout(function(){
                 var canvas = document.getElementById('cropzee-hidden-canvas');
                 var ctx = canvas.getContext('2d');
-                ctx.canvas.width = cropzeeCanvasWidth;
-                ctx.canvas.height = cropzeeCanvasHeight;
+                ctx.canvas.width = window.cropzeeCanvasWidth;
+                ctx.canvas.height = window.cropzeeCanvasHeight;
                 var img = new Image();
                 img.src = src;
-                ctx.drawImage(img, 0, 0, cropzeeCanvasWidth, cropzeeCanvasHeight);
+                ctx.drawImage(img, 0, 0, window.cropzeeCanvasWidth, window.cropzeeCanvasHeight);
                 setTimeout(function(){
                     // the css-only modal is called via href see https://hunzaboy.github.io/Light-Modal/#
-                    window.location = window.location.pathname + "#cropzee-modal";
+                    window.location = window.location.pathname.replace("#cropzee-modal#", "") + "#cropzee-modal";
                     // function to trigger croppr.js on picture in modal
                     cropzeeTriggerCroppr();
                 }, 50);
