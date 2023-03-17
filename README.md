@@ -55,7 +55,10 @@ There can be as many image previewers to a specific input as you would like. Als
 | ------------- | :-: | :-: | :-: | :-: |
 | allowedInputs | supported input files (by extension names) | Array of strings | * ```'gif'```<br/>* ```'png'```<br/>* ```'jpg'```<br/>* ```'jpeg'``` | ```['gif','png','jpg','jpeg']``` |
 | imageExtension | cropped image file-type (extension) | String | * ```'image/jpeg'```<br/>* ```'image/png'``` | ```'image/jpeg'``` |
-| returnImageMode | image data to be returned, 'blob' for blob object or 'data-url' for dataURL | String | * ```'data-url'```<br/>* ```'blob'``` | ```'data-url'``` |
+| returnImageMode | image data to be returned, 'blob' for blob object or 'data-url' for dataURL | String | * ```'data-url'```<br/>* ```'blob'``` | ```'data-url'``` |:
+| buttonLanguage | language items for the modal buttons | Array of strings | Cnce, rotate, done  | ```[cancel:'Cancel',rotate'Rotate 90#176;',done:'Done']``` |
+| onEnd | A callback function that is called the modal is closed. | Function |  ```eg function(instance) { // do things here }``` | ```null``` |
+| imageTarget | A target where the image is transfere to | input  |  ```eg input[`name=save_photo`]``` | ```null``` |
 ### From Croppr
 | Option  | Explanation | Value Type | Values | Default |
 | ------------- | :-: | :-: | :-: | :-: |
