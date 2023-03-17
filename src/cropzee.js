@@ -35,6 +35,8 @@ jQuery.fn.extend({
         imageExtension: 'image/jpeg', // cropped image/blob file-type 'image/jpeg' | 'image/png' | any other supported by browser
         returnImageMode: 'data-url', // image data mode, 'blob' for blob object or 'data-url' for dataURL
         buttonLanguage: null,
+        onEnd: null,
+        imageTarget: null,
     }) {
         if (options.aspectRatio <= 0) {
             options.aspectRatio = null;
@@ -138,8 +140,14 @@ jQuery.fn.extend({
                 window.cropzeeReturnImage = [];
                 cropzeeReturnImage[id] = canvas.toDataURL(options.imageExtension);
             }
+            //see if there is a target to store the created image in
+            if(options.imageTarget !== null)
+            {
+                $(options.imageTarget).val(cropzeeGetImage(id));
+            }
+            
             // cropping finished, close modal
-            closeModal();
+            closeModal(options);
         }
         // function to initialize croppr.js on the image inside modal
         // returnMode option is not supported in cropzee
@@ -184,7 +192,7 @@ jQuery.fn.extend({
                     + '</div>'
                     + '<!-- light modal footer -->'
                     + '<div class="light-modal-footer" style="justify-content: space-between;">'
-                        + '<div onclick="closeModal()" class="light-modal-close-btn" style="cursor: pointer;" aria-label="close">'+language.cancel+'</div>'
+                        + '<div onclick="closeModal(options)" class="light-modal-close-btn" style="cursor: pointer;" aria-label="close">'+language.cancel+'</div>'
                         + '<div onclick="cropzeeRotateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">'+language.rotate+'</div>'
                         + '<div onclick="cropzeeCreateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">'+language.done+'</div>'
                     + '</div>'
@@ -246,7 +254,7 @@ jQuery.fn.extend({
         // function to close modal when user clicks outside modal
         $(document).click(function (e) {
             if ($(e.target).is('#cropzee-modal')) {
-                closeModal();
+                closeModal(options);
             }
         });
         // function that is called first, when input is triggered
@@ -274,7 +282,11 @@ jQuery.fn.extend({
     }
 });
 // function to close modal
-function closeModal() {
+function closeModal(options) {
+    if(options.onEnd !== null)
+    {
+        options.onEnd();
+    }
     $('#cropzee-modal').remove();
     window.location = window.location.pathname + '#';
 }
