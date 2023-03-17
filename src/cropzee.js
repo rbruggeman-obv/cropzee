@@ -34,6 +34,7 @@ jQuery.fn.extend({
         allowedInputs: ['gif','png','jpg','jpeg'], // input extensions supported
         imageExtension: 'image/jpeg', // cropped image/blob file-type 'image/jpeg' | 'image/png' | any other supported by browser
         returnImageMode: 'data-url', // image data mode, 'blob' for blob object or 'data-url' for dataURL
+        buttonLanguage: null,
     }) {
         if (options.aspectRatio <= 0) {
             options.aspectRatio = null;
@@ -46,6 +47,9 @@ jQuery.fn.extend({
         }
         if (!options.returnImageMode) {
             options.returnImageMode = 'data-url';
+        }
+        if (!options.buttonLanguage) {
+            options.buttonLanguage = {cancel:'Cancel', rotate:'Rotate 90&#176;', done:'Done'};
         }
         // function to reset input (value) of input, taking in input id
         // resets input value of cropzee input type=file so that same file can be selected twice
@@ -158,6 +162,7 @@ jQuery.fn.extend({
         function cropzeeTriggerModal(id, src) {
             // take in animation option and add 'animated' before it
             var animation = options.modalAnimation;
+            var language = options.buttonLanguage;
             if (animation) {
                 if (animation.indexOf('animated') == -1) {
                     animation = 'animated ' + animation;
@@ -179,9 +184,9 @@ jQuery.fn.extend({
                     + '</div>'
                     + '<!-- light modal footer -->'
                     + '<div class="light-modal-footer" style="justify-content: space-between;">'
-                        + '<div onclick="closeModal()" class="light-modal-close-btn" style="cursor: pointer;" aria-label="close">Cancel</div>'
-                        + '<div onclick="cropzeeRotateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">Rotate 90deg</div>'
-                        + '<div onclick="cropzeeCreateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">Done</div>'
+                        + '<div onclick="closeModal()" class="light-modal-close-btn" style="cursor: pointer;" aria-label="close">'+language.cancel+'</div>'
+                        + '<div onclick="cropzeeRotateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">'+language.rotate+'</div>'
+                        + '<div onclick="cropzeeCreateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">'+language.done+'</div>'
                     + '</div>'
                 + '</div>'
                 + '<canvas style="position: absolute; top: -99999px; left: -99999px;" id="cropzee-hidden-canvas"></canvas>'
