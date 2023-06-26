@@ -184,7 +184,7 @@ jQuery.fn.extend({
                     + '<!-- light modal header -->'
                     + '<!-- <div class="light-modal-header">'
                         + '<h3 class="light-modal-heading">Cropzee</h3>'
-                        + '<a href="#" class="light-modal-close-icon" aria-label="close">&times;</a>'
+                        + '<a href="#cropzee" class="light-modal-close-icon" aria-label="close">&times;</a>'
                     + '</div> -->'
                     + '<!-- light modal body -->'
                     + '<div class="light-modal-body" style="max-height: 500px;">'
@@ -192,7 +192,7 @@ jQuery.fn.extend({
                     + '</div>'
                     + '<!-- light modal footer -->'
                     + '<div class="light-modal-footer" style="justify-content: space-between;">'
-                        + '<div onclick="closeModal(options)" class="light-modal-close-btn" style="cursor: pointer;" aria-label="close">'+language.cancel+'</div>'
+                        + '<div onclick="closeModal()" class="light-modal-close-btn" style="cursor: pointer;" aria-label="close">'+language.cancel+'</div>'
                         + '<div onclick="cropzeeRotateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">'+language.rotate+'</div>'
                         + '<div onclick="cropzeeCreateImage(`' + id + '`);" class="light-modal-close-btn" style="cursor: pointer;">'+language.done+'</div>'
                     + '</div>'
@@ -251,10 +251,20 @@ jQuery.fn.extend({
                 reader.readAsDataURL(input.files[0]);
             }
         }
+        // function to close modal
+        window.closeModal = function () {
+            if(typeof options.onEnd !== 'undefined' && options.onEnd !== null)
+            {
+                options.onEnd();
+            }
+            $('#cropzee-modal').remove();
+            window.location = window.location.pathname + '#cropzee';
+        }
+
         // function to close modal when user clicks outside modal
         $(document).click(function (e) {
             if ($(e.target).is('#cropzee-modal')) {
-                closeModal(options);
+                closeModal();
             }
         });
         // function that is called first, when input is triggered
@@ -262,6 +272,9 @@ jQuery.fn.extend({
         $(this).click(function(){
             var cropzeeInputId = $(this).attr('id');
             resetFileInput(cropzeeInputId);
+            if ($('a[name="cropzee"]').length == 0) {
+                $(this).before('<a name="cropzee" style="scroll-margin-top: 100px;"></a>');
+            }
             // when image is selected, the image-previewers are transformed to canvases
             // then the input data is passed to be read for previewing
             $(this).one("change", function(){
@@ -281,12 +294,3 @@ jQuery.fn.extend({
         });
     }
 });
-// function to close modal
-function closeModal(options) {
-    if(options.onEnd !== null)
-    {
-        options.onEnd();
-    }
-    $('#cropzee-modal').remove();
-    window.location = window.location.pathname + '#';
-}
